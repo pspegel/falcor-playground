@@ -1,14 +1,15 @@
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 
 export default {
   entry: {
-    server: "./client/index.tsx"
+    main: "./client/index.tsx"
   },
   output: {
     path: path.join(__dirname, "dist"),
     publicPath: "/",
-    filename: "[name].js" // [name] refers to the entry point filename.
+    filename: "[name].js" // [name] refers to the entry point key.
   },
   target: "web",
   module: {
@@ -26,5 +27,8 @@ export default {
       filename: "./index.html",
       excludeChunks: ["server"]
     })
-  ]
+  ],
+  optimization: {
+    minimizer: [new TerserPlugin()]
+  }
 };

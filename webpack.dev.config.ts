@@ -10,6 +10,7 @@ export default {
     publicPath: "/",
     filename: "[name].js" // [name] refers to the entry point key.
   },
+  mode: "development", // Required because this config will be loaded server side. Otherwise it will default to prod.
   target: "web",
   module: {
     rules: [
@@ -18,7 +19,7 @@ export default {
     ]
   },
   resolve: {
-    extensions: ["ts", "tsx"]
+    extensions: [".ts", ".tsx"]
   },
   plugins: [
     // Inject React app into custom HTML template. Without this plugin no index.html would exist in the dist folder.

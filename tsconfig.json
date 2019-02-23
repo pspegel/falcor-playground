@@ -4,6 +4,8 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "jsx": "react"
+  },
+  "exclude": ["node_modules"]
 }

@@ -19,7 +19,7 @@ export default {
     ]
   },
   resolve: {
-    extensions: ["ts", "tsx"]
+    extensions: [".ts", ".tsx"]
   },
   plugins: [
     new HtmlWebpackPlugin({

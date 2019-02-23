@@ -1,7 +1,7 @@
 import path from "path";
 import nodeExternals from "webpack-node-externals";
 
-export default (env, argv) => {
+export default (env: any, argv: any) => {
   const server =
     argv.mode === "production"
       ? "./server/prodServer.ts"
@@ -29,7 +29,7 @@ export default (env, argv) => {
       ]
     },
     resolve: {
-      extensions: ["ts", "tsx"]
+      extensions: [".ts", ".tsx"]
     }
   };
 };

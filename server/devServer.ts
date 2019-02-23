@@ -1,8 +1,21 @@
 import express from "express";
 import path from "path";
+import webpack from "webpack";
+import middleware from "webpack-dev-middleware";
+
+import webpackConfig from "../webpack.dev.config";
 
 const app = express();
 const port = 5000;
+
+// Compile the client app in memory instead of explicitly running webpack which writes the client bundle to /dist.
+// Changes in the client are compiled automatically but the browser wont reload or HMR.
+const compiler = webpack([webpackConfig as any]);
+app.use(
+  middleware(compiler, {
+    publicPath: webpackConfig.output.publicPath
+  })
+);
 
 app.get("/api", (req, res) => res.send("Up and running"));
 

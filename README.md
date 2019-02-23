@@ -7,11 +7,12 @@
 2. Build the API server with `npm build`.
 
    - Webpack will use Babel to transpile the API code to JavaScript understandable by Node.
-   - Webpack will run in development mode. Since the project doesn't have environment specific configurations yet, this will not have much affect.
+   - Webpack will run in development mode which with this configuration means that HMR is enabled.
 
 3. Run the API server with `npm start`.
 
-   - As of this moment you will have to restart the server manually after making code changes.
+   - When the server starts webpack will build the client in memory.
+   - When a change is made to the client, the module will get replaced live in the browser.
 
 ## Type checking
 
@@ -29,21 +30,27 @@ TypeScript is configured in `tsconfig.json`. Some comments on the settings:
 
 - `target` is set high to leave most of the work to Babel.
 - `moduleResolution` is set to **node** to look in `node_modules` first for non-relative imports. This is the modern way of resolving modules.
-- `allowJs`allows TypeScript to process .js files.
+- `allowJs`allows TypeScript to process .js files. This is required to resolve the HMR client.
 - `noEmit` leaves the transformation of files to Babel.
-- `strict` enables strict type checking.
 - `esModuleInterop` treat ES5 (old school) modules as default imports.
+- `jsx` must be enabled to use JSX syntax in TypeScript files.
+- `allowSyntheticDefaultImports` must be enabled to avoid a lot of `import * as` in TypeScript.
 
 ### Webpack
 
-Webpack is configured in `webpack.config.ts`. The configuration file is transpiled to JavaScript by Babel with a require hook. This is the `--config-register` part of the build script.
+Webpack is configured in the `webpack.*.config.ts` files. The Express server and a React client has different react configurations since the client is built for web and the server is built for Node.
+
+Furthermore, the client build has different configurations for development and production since we want HMR and development tools in dev and optimization in production.
+
+The configuration file is transpiled to JavaScript by Babel with a require hook. This is the `--config-register` part of the build script.
 
 Some comments on the webpack config:
 
+- `name` is needed by `webpack-hot-middleware` to keep bundles apart.
 - `entry` points out where to find the root of the API code.
 - `output` tells Babel where to transform the files when building.
-- `target` specifies that the API will be run by Node (as opposed to a browser or anything else).
-- `externals` tells webpack not to bundle the node_modules with the API. This is standard for backend Webpack applications.
+- `target` tells Webpack how the bundle will be executed.
+- `externals` tells Webpack not to bundle the node_modules with the API. This is standard for backend Webpack applications.
 - `module.rules` defines that TypeScript will be transpiled by Babel.
 - `resolve` lists all extensions that can be omitted in import paths.
 

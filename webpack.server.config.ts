@@ -8,6 +8,7 @@ export default (env: any, argv: any) => {
       : "./server/devServer.ts";
 
   return {
+    name: "server",
     entry: {
       server
     },
@@ -29,7 +30,7 @@ export default (env: any, argv: any) => {
       ]
     },
     resolve: {
-      extensions: [".ts", ".tsx"]
+      extensions: [".js", ".ts", ".tsx"]
     }
   };
 };

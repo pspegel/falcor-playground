@@ -2,10 +2,11 @@
   "compilerOptions": {
     "target": "esnext",
     "moduleResolution": "node",
+    "allowJs": true,
     "noEmit": true,
-    "strict": true,
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules"]
 }

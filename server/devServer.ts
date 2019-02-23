@@ -1,7 +1,8 @@
 import express from "express";
 import path from "path";
 import webpack from "webpack";
-import middleware from "webpack-dev-middleware";
+import devMiddleware from "webpack-dev-middleware";
+import hotMiddleware from "webpack-hot-middleware";
 
 import webpackConfig from "../webpack.dev.config";
 
@@ -12,10 +13,13 @@ const port = 5000;
 // Changes in the client are compiled automatically but the browser wont reload or HMR.
 const compiler = webpack([webpackConfig as any]);
 app.use(
-  middleware(compiler, {
+  devMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath
   })
 );
+
+// Replace modules live in the browser.
+app.use(hotMiddleware(compiler));
 
 app.get("/api", (req, res) => res.send("Up and running"));
 

@@ -27,8 +27,4 @@ app.get("/api", (req, res) => res.send("Up and running"));
 // <script> tag in the HTML template would be worthless.
 app.use(express.static(__dirname));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/index.html"));
-});
-
 app.listen(port, () => console.log(`Server running at port ${port}`));

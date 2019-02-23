@@ -2,15 +2,10 @@ import path from "path";
 import nodeExternals from "webpack-node-externals";
 
 export default (env: any, argv: any) => {
-  const server =
-    argv.mode === "production"
-      ? "./server/prodServer.ts"
-      : "./server/devServer.ts";
-
   return {
     name: "server",
     entry: {
-      server
+      server: "./server"
     },
     output: {
       path: path.join(__dirname, "dist"),

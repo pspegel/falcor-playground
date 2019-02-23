@@ -1,8 +1,17 @@
 import express from "express";
+import path from "path";
 
-const api = express();
+const app = express();
 const port = 5000;
 
-api.get("/", (req, res) => res.send("Up and running"));
+app.get("/api", (req, res) => res.send("Up and running"));
 
-api.listen(port, () => console.log(`API running at port ${port}`));
+// Allow Express to serve static content like script files. Without it the React app would not be accessible and the
+// <script> tag in the HTML template would be worthless.
+app.use(express.static(__dirname));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/index.html"));
+});
+
+app.listen(port, () => console.log(`Server running at port ${port}`));

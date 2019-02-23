@@ -21,10 +21,10 @@ export default {
     extensions: ["ts", "tsx"]
   },
   plugins: [
+    // Inject React app into custom HTML template. Without this plugin no index.html would exist in the dist folder.
     new HtmlWebpackPlugin({
       template: "./client/index.html",
-      filename: "./index.html",
-      excludeChunks: ["server"]
+      filename: "./index.html"
     })
   ]
 };

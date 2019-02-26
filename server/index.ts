@@ -1,16 +1,16 @@
-import express from "express";
-import webpack from "webpack";
-import devMiddleware from "webpack-dev-middleware";
-import hotMiddleware from "webpack-hot-middleware";
-import falcorExpress from "falcor-express";
-import Router from "falcor-router";
+import express from 'express';
+import webpack from 'webpack';
+import devMiddleware from 'webpack-dev-middleware';
+import hotMiddleware from 'webpack-hot-middleware';
+import falcorExpress from 'falcor-express';
+import Router from 'falcor-router';
 
-import webpackConfig from "../webpack.dev.config";
+import webpackConfig from '../webpack.dev.config';
 
 const app = express();
 const port = 5000;
 
-if (app.get("env") === "development") {
+if (app.get('env') === 'development') {
   // Compile the client app in memory instead of explicitly running webpack which writes the client bundle to /dist.
   // Changes in the client are compiled automatically but the browser wont reload or HMR.
   const compiler = webpack([webpackConfig as any]);
@@ -25,19 +25,19 @@ if (app.get("env") === "development") {
 }
 
 app.use(
-  "/model.json",
+  '/model.json',
   falcorExpress.dataSourceRoute(
     (req, res) =>
       new Router([
         {
-          route: "greeting",
-          get: () => ({ path: ["greeting"], value: "Hello world" })
+          route: 'greeting',
+          get: () => ({ path: ['greeting'], value: 'Hello world' })
         }
       ])
   )
 );
 
-app.get("/api", (req, res) => res.send("Up and running"));
+app.get('/api', (req, res) => res.send('Up and running'));
 
 // Allow Express to serve static content like script files. Without it the React app would not be accessible and the
 // <script> tag in the HTML template would be worthless.

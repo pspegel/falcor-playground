@@ -1,7 +1,7 @@
-import React from "react";
-import { hot } from "react-hot-loader/root";
+import React from 'react';
+import { hot } from 'react-hot-loader/root';
 
-import Model from "./Model";
+import Model from './Model';
 
 const App: React.FunctionComponent<{}> = () => (
   <div>

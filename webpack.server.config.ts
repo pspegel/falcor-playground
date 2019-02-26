@@ -1,18 +1,18 @@
-import path from "path";
-import nodeExternals from "webpack-node-externals";
+import path from 'path';
+import nodeExternals from 'webpack-node-externals';
 
 export default (env: any, argv: any) => {
   return {
-    name: "server",
+    name: 'server',
     entry: {
-      server: "./server"
+      server: './server'
     },
     output: {
-      path: path.join(__dirname, "dist"),
-      publicPath: "/",
-      filename: "[name].js" // [name] refers to the entry point key..
+      path: path.join(__dirname, 'dist'),
+      publicPath: '/',
+      filename: '[name].js' // [name] refers to the entry point key..
     },
-    target: "node",
+    target: 'node',
     node: {
       // Tell Node to set these variables to the output file.
       __dirname: false,
@@ -20,12 +20,10 @@ export default (env: any, argv: any) => {
     },
     externals: [nodeExternals()], // Do not bundle any node_modules
     module: {
-      rules: [
-        { test: /\.tsx?$/, exclude: /node_modules/, loader: "babel-loader" }
-      ]
+      rules: [{ test: /\.tsx?$/, exclude: /node_modules/, loader: 'babel-loader' }]
     },
     resolve: {
-      extensions: [".js", ".ts", ".tsx"]
+      extensions: ['.js', '.ts', '.tsx']
     }
   };
 };

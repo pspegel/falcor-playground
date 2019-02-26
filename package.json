@@ -8,7 +8,7 @@
     "build:prod": "rimraf ./dist && webpack --mode production --config webpack.server.config.ts --config-register @babel/register && webpack --mode production --config webpack.prod.config.ts --config-register @babel/register",
     "check-types": "tsc",
     "check-types:watch": "npm run check-types -- --watch",
-    "start": "node ./dist/server.js",
+    "start": "nodemon -r ts-node/register ./server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,6 +33,17 @@
       "@babel/preset-react"
     ]
   },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "server"
+    ],
+    "ext": "ts"
+  },
   "devDependencies": {
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.3.0",
@@ -55,9 +66,11 @@
     "babel-loader": "8.0.5",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
+    "nodemon": "1.18.10",
     "react-hot-loader": "4.7.1",
     "rimraf": "2.6.3",
     "terser-webpack-plugin": "1.2.2",
+    "ts-node": "8.0.2",
     "typescript": "3.3.1",
     "webpack": "4.29.0",
     "webpack-cli": "3.2.1",

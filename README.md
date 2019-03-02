@@ -1,18 +1,31 @@
 # falcor-playground
 
+## Purpose
+
+The purposes of this repo is to have a project where I can explore and learn about Express, MongoDB and most of all [Falcor](https://netflix.github.io/falcor/).
+
+I try to explain all the settings and design choices as I go. Look in the information below and in the code comments for details about how this was set up.
+
 ## Getting started
+
+### Prerequisites
+
+Install the following:
+
+- [Node.js](https://nodejs.org/en/) with NPM package manager.
+- [MongoDB](https://www.mongodb.com/download-center/community) database server.
+
+### Running the application
 
 1. Install dependencies with `npm install`.
 
-2. Build the API server with `npm build`.
-
-   - Webpack will use Babel to transpile the API code to JavaScript understandable by Node.
-   - Webpack will run in development mode which with this configuration means that HMR is enabled.
+2. (Optional) Seed the database with data with `npm run seed`.
 
 3. Run the API server with `npm start`.
 
-   - When the server starts webpack will build the client in memory.
-   - When a change is made to the client, the module will get replaced live in the browser.
+    - Nodemon will run Node with a require hook to ts-node that enables node to compile server side TypeScript. Nodemon watches the `/server` folder for changes and builds the Express server in memory.
+    - When the server starts Webpack will build the client in memory using Babel.
+    - When a change is made to the client, the module will get replaced live in the browser by Express.
 
 ## Type checking
 
@@ -30,11 +43,14 @@ TypeScript is configured in `tsconfig.json`. Some comments on the settings:
 
 - `target` is set high to leave most of the work to Babel.
 - `moduleResolution` is set to **node** to look in `node_modules` first for non-relative imports. This is the modern way of resolving modules.
-- `allowJs`allows TypeScript to process .js files. This is required to resolve the HMR client.
+- `allowJs` allows TypeScript to process .js files. This is required to resolve the HMR client.
 - `noEmit` leaves the transformation of files to Babel.
 - `esModuleInterop` treat ES5 (old school) modules as default imports.
 - `jsx` must be enabled to use JSX syntax in TypeScript files.
 - `allowSyntheticDefaultImports` must be enabled to avoid a lot of `import * as` in TypeScript.
+- `baseUrl` allows us to reference both client and server side code in development scripts.
+- `paths` allows us to declare path aliases for non-relative imports.
+- `exclude` tells the TypeScript compiler not to touch node_modules (since they should be compatible already).
 
 ### Webpack
 
@@ -42,7 +58,7 @@ Webpack is configured in the `webpack.*.config.ts` files. The Express server and
 
 Furthermore, the client build has different configurations for development and production since we want HMR and development tools in dev and optimization in production.
 
-The configuration file is transpiled to JavaScript by Babel with a require hook. This is the `--config-register` part of the build script.
+The configuration file is transpiled to JavaScript by Babel with a require hook. This is the `--config-register` part of the build script. This is necessary to allow ES6 and TypeScript in configuration files.
 
 Some comments on the webpack config:
 
@@ -52,7 +68,7 @@ Some comments on the webpack config:
 - `target` tells Webpack how the bundle will be executed.
 - `externals` tells Webpack not to bundle the node_modules with the API. This is standard for backend Webpack applications.
 - `module.rules` defines that TypeScript will be transpiled by Babel.
-- `resolve` lists all extensions that can be omitted in import paths.
+- `resolve` lists all extensions that can be omitted in import paths. Note that extensions in webpack must have a dot while others (like nodemon) mustn't have one.
 
 ### Babel
 

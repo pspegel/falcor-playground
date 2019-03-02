@@ -6,7 +6,7 @@
     "no-empty": false,
     "no-implicit-dependencies": [true, "dev", ["client", "server"]],
     "no-namespace": [true, "allow-declarations"],
-    "no-submodule-imports": [true],
+    "no-submodule-imports": [true, "client", "server"],
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-for-of": false,

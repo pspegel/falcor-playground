@@ -27,6 +27,27 @@ Install the following:
     - When the server starts Webpack will build the client in memory using Babel.
     - When a change is made to the client, the module will get replaced live in the browser by Express.
 
+## Debugging with VS Code
+
+1. Start the server in debug mode with `npm run debug`.
+
+2. Create a launch script and run it:
+
+```
+{
+  "name": "Debug server",
+  "type": "node",
+  "request": "attach", // Attach to existing process.
+  "processId": "${command:PickProcess}", // Show list of processes to pick from.
+  "restart": true, // Attaches again when nodemon restarts server.
+  "protocol": "inspector" // Modern debugger.
+}
+```
+
+3. Pick any of the processes related to this project.
+
+4. Add a breakpoint and trigger it!
+
 ## Type checking
 
 Run the following script to perform type checking once:
@@ -75,3 +96,12 @@ Some comments on the webpack config:
 Babel is configured in `package.json` in the `"babel"` section. Each preset is a collection of plugins commonly used together for a specific purpose. These plugins help Babel transform and parse newer syntax.
 
 See [Babel plugin docs](https://babeljs.io/docs/en/plugins) for more information.
+
+## Database design
+
+In the early days of MongoDB they made an appalling choice of having singular names for models and plural names for the collections (table in a relational DB). For consistency all names in this project are singular.
+
+## TODO
+
+* HMR doesn't work for nested components. Go back and check when it stopped working.
+* Error handling of DB connection.

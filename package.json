@@ -8,6 +8,7 @@
     "check-types": "tsc",
     "check-types:watch": "npm run check-types -- --watch",
     "start": "nodemon -r ts-node/register ./server",
+    "debug": "nodemon --inspect -r ts-node/register ./server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node --files -r tsconfig-paths/register ./seed"
   },

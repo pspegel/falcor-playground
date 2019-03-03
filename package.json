@@ -94,6 +94,7 @@
     "webpack-node-externals": "1.7.2"
   },
   "dependencies": {
+    "@babel/polyfill": "7.2.5",
     "express": "4.16.4",
     "falcor": "2.0.5",
     "falcor-express": "0.1.4",

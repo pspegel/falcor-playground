@@ -5,7 +5,11 @@ export default {
   name: 'client',
   entry: {
     // webpack-hot-middleware/client refers to client.js inside node_modules, not our client.
-    main: ['webpack-hot-middleware/client', './client/index.tsx']
+    main: [
+      '@babel/polyfill',
+      'webpack-hot-middleware/client?path=http://localhost:5000/__webpack_hmr',
+      './client/index.tsx'
+    ]
   },
   output: {
     // We only need a public path here since the client is build in memory.

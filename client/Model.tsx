@@ -32,11 +32,13 @@ class Model extends React.Component<{}, ModelState> {
     this.model.invalidate(['recipe']);
     const numberOfRecipies: number = await this.model.getValue(['recipe', 'length']);
 
-    this.model.get(['recipe', { from: 0, to: numberOfRecipies - 1 }, 'title']).then((response) => {
-      console.log({
-        response
+    this.model
+      .get(['recipe', { from: 0, to: numberOfRecipies - 1 }, ['title', 'description', 'tags']])
+      .then((response) => {
+        console.log({
+          response
+        });
       });
-    });
   };
 }
 

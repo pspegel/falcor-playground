@@ -6,9 +6,7 @@ import falcorExpress from 'falcor-express';
 import Router from 'falcor-router';
 
 import webpackConfig from '../webpack.dev.config';
-import db from './db';
-import { ModelName } from './constants';
-import Recipe, { RecipeProperties } from './models/Recipe';
+import falcorRoutes from './falcorRoutes';
 
 /*tslint:disable:no-console*/
 
@@ -31,33 +29,7 @@ if (app.get('env') === 'development') {
   app.use(hotMiddleware(compiler));
 }
 
-app.use(
-  '/model.json',
-  falcorExpress.dataSourceRoute(
-    (req, res) =>
-      new Router([
-        {
-          route: `${ModelName.recipe}["length"]`,
-          get: () =>
-            db.then(async () => {
-              const value = await Recipe.estimatedDocumentCount();
-              return { path: [ModelName.recipe, 'length'], value };
-            })
-        },
-        {
-          route: `${ModelName.recipe}[{integers}].title`,
-          get: () =>
-            db.then(async () => {
-              const recipies = await Recipe.find({}, { title: 1 });
-              return recipies.map((recipe: RecipeProperties, index) => ({
-                path: [ModelName.recipe, index, 'title'],
-                value: recipe.title
-              }));
-            })
-        }
-      ])
-  )
-);
+app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => new Router(falcorRoutes)));
 
 app.get('/api', (req, res) => {
   res.send('Up and running');

@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 import { WithTimestamps } from '../types';
 import { ModelName } from '../constants';
+import { getGettableProperties } from '../helpers';
 
 export interface RecipeProperties extends WithTimestamps {
   title: string;
@@ -12,14 +13,15 @@ export interface RecipeProperties extends WithTimestamps {
 
 interface RecipeModel extends RecipeProperties, mongoose.Document {}
 
-const recipeSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    tags: { type: [String], required: false },
-    introduction: { type: String, required: false },
-    text: { type: String, required: false }
-  },
-  { timestamps: true }
-);
+const properties = {
+  title: { type: String, required: true, gettable: true },
+  tags: { type: [String], required: false, gettable: true },
+  introduction: { type: String, required: false, gettable: true },
+  text: { type: String, required: false, gettable: true }
+};
+
+const recipeSchema = new mongoose.Schema(properties, { timestamps: true });
+
+export const gettableRecipeProperties = getGettableProperties(properties);
 
 export default mongoose.model<RecipeModel>(ModelName.recipe, recipeSchema, ModelName.recipe);

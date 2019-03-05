@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { WithTimestamps } from '../types';
-import { ModelName } from '../constants';
+import { DbModelName } from '../constants';
 import { getGettableProperties } from '../helpers';
 
 export interface RecipeProperties extends WithTimestamps {
@@ -24,4 +24,4 @@ const recipeSchema = new mongoose.Schema(properties, { timestamps: true });
 
 export const gettableRecipeProperties = getGettableProperties(properties);
 
-export default mongoose.model<RecipeModel>(ModelName.recipe, recipeSchema, ModelName.recipe);
+export default mongoose.model<RecipeModel>(DbModelName.Recipe, recipeSchema, DbModelName.Recipe);

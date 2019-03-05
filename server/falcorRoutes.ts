@@ -1,20 +1,20 @@
 import { RouteDefinition } from 'falcor-router';
 import _ from 'lodash';
 
-import { ModelName } from './constants';
+import { DbModelName, PathKey } from './constants';
 import Recipe, { RecipeProperties, gettableRecipeProperties } from './models/Recipe';
 import db from './db';
 import { toProjection, toPathKeys, atomize } from './helpers';
 
-const getRecipe = `${ModelName.recipe}[{integers}].${toPathKeys(gettableRecipeProperties)}`;
+export const getRecipe = `${PathKey.Recipe}[{integers}].${toPathKeys(gettableRecipeProperties)}`;
 
 const routes: RouteDefinition[] = [
   {
-    route: `${ModelName.recipe}["length"]`,
+    route: `${PathKey.Recipe}.length`,
     get: () =>
       db.then(async () => {
         const value = await Recipe.estimatedDocumentCount();
-        return { path: [ModelName.recipe, 'length'], value };
+        return { path: [DbModelName.Recipe, 'length'], value };
       })
   },
   {
@@ -26,7 +26,7 @@ const routes: RouteDefinition[] = [
         const recipies = await Recipe.find({}, toProjection(keys));
         return _.flatMap(recipies, (recipe: RecipeProperties, index) =>
           keys.map((key) => ({
-            path: [ModelName.recipe, index, key],
+            path: [DbModelName.Recipe, index, key],
             value: atomize(recipe[key])
           }))
         );

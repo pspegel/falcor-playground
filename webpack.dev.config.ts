@@ -1,5 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
+import path from 'path';
 
 export default {
   name: 'client',
@@ -24,6 +25,10 @@ export default {
     ]
   },
   resolve: {
+    alias: {
+      client: path.resolve(__dirname, './client'),
+      server: path.resolve(__dirname, './server')
+    },
     extensions: ['.js', '.ts', '.tsx']
   },
   plugins: [

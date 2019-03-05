@@ -1,13 +1,13 @@
 import seeder from 'mongoose-seed';
 
-import { DB_URL, ModelName } from 'server/constants';
+import { DB_URL, DbModelName } from 'server/constants';
 import { fakeRecipies } from './recipe';
 
 seeder.setLogOutput(true);
 seeder.connect(DB_URL, () => {
   seeder.loadModels(['server/models/recipe']);
 
-  seeder.clearModels([ModelName.recipe], () => {
+  seeder.clearModels([DbModelName.Recipe], () => {
     seeder.populateModels(data, () => {
       seeder.disconnect();
     });
@@ -16,7 +16,7 @@ seeder.connect(DB_URL, () => {
 
 const data = [
   {
-    model: ModelName.recipe,
+    model: DbModelName.Recipe,
     documents: fakeRecipies(4)
   }
 ];

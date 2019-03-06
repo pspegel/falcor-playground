@@ -7,4 +7,4 @@ const generate = (): RecipeProperties => ({
   title
 });
 
-export const fakeRecipies = (size: number): RecipeProperties[] => _.times(size, generate);
+export const fakeRecipes = (size: number): RecipeProperties[] => _.times(size, generate);

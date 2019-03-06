@@ -1,7 +1,7 @@
 import seeder from 'mongoose-seed';
 
 import { DB_URL, DbModelName } from 'server/constants';
-import { fakeRecipies } from './recipe';
+import { fakeRecipes } from './recipe';
 
 seeder.setLogOutput(true);
 seeder.connect(DB_URL, () => {
@@ -17,6 +17,6 @@ seeder.connect(DB_URL, () => {
 const data = [
   {
     model: DbModelName.Recipe,
-    documents: fakeRecipies(4)
+    documents: fakeRecipes(4)
   }
 ];

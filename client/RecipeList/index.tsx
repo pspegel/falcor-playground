@@ -12,36 +12,36 @@ type Recipe = Readonly<{
 type RecipeListProps = Readonly<{}>;
 
 type RecipeListState = Readonly<{
-  recipies: Recipe[];
+  recipes: Recipe[];
 }>;
 
 class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
   constructor(props) {
     super(props);
     this.state = {
-      recipies: []
+      recipes: []
     };
   }
 
   public componentDidMount = () => {
-    model.getValue(['recipe', 'length']).then((numberOfRecipies) => {
-      if (!numberOfRecipies) {
+    model.getValue(['recipe', 'length']).then((numberOfRecipes) => {
+      if (!numberOfRecipes) {
         return;
       }
 
       const fields = ['title'];
-      model.get([PathKey.Recipe, { from: 0, to: numberOfRecipies - 1 }, fields]).then(({ json }) => {
+      model.get([PathKey.Recipe, { from: 0, to: numberOfRecipes - 1 }, fields]).then(({ json }) => {
         this.setState({
-          recipies: project<Recipe>(json[PathKey.Recipe], fields)
+          recipes: project<Recipe>(json[PathKey.Recipe], fields)
         });
       });
     });
   };
 
   public render() {
-    const { recipies } = this.state;
+    const { recipes } = this.state;
 
-    const recipeList = recipies.map((recipe) => (
+    const recipeList = recipes.map((recipe) => (
       <div key={recipe.id}>
         <span className="recipe-name">{recipe.title}</span>
       </div>
@@ -49,7 +49,7 @@ class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
 
     return (
       <div className="recipe-list">
-        <h2>Recipies</h2>
+        <h2>Recipes</h2>
         {recipeList}
       </div>
     );

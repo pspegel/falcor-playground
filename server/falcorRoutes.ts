@@ -29,8 +29,8 @@ const routes: RouteDefinition[] = [
 
       return db
         .then(async () => {
-          const recipies = await Recipe.find({}, toProjection(keys));
-          return _.flatMap(recipies, (recipe: RecipeProperties, index) =>
+          const recipes = await Recipe.find({}, toProjection(keys));
+          return _.flatMap(recipes, (recipe: RecipeProperties, index) =>
             keys.map((key) => ({
               path: [DbModelName.Recipe, index, key],
               value: atomize(recipe[key])

@@ -68,6 +68,7 @@
     "@types/mongoose": "5.3.20",
     "@types/react": "16.8.4",
     "@types/react-dom": "16.8.2",
+    "@types/react-router-dom": "4.3.1",
     "@types/terser-webpack-plugin": "1.2.0",
     "@types/webpack-dev-middleware": "2.0.2",
     "@types/webpack-hot-middleware": "2.16.5",
@@ -106,6 +107,7 @@
     "lodash": "4.17.11",
     "mongoose": "5.4.16",
     "react": "16.8.3",
-    "react-dom": "16.8.3"
+    "react-dom": "16.8.3",
+    "react-router-dom": "4.3.1"
   }
 }

@@ -5,5 +5,6 @@ export enum DbModelName {
 export const DB_URL = 'mongodb://localhost/falcorPlayground';
 
 export enum PathKey {
-  Recipe = 'recipe'
+  Recipe = 'recipe',
+  RecipeById = 'recipeById'
 }

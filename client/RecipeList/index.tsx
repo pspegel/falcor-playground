@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { model } from 'client/falcorModel';
 import { PathKey } from 'server/constants';
@@ -43,7 +44,9 @@ class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
 
     const recipeList = recipes.map((recipe) => (
       <div key={recipe.id}>
-        <span className="recipe-name">{recipe.title}</span>
+        <Link to={`/recipe/${recipe.id}`} className="recipe-name">
+          {recipe.title}
+        </Link>
       </div>
     ));
 

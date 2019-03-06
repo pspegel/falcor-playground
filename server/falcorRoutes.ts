@@ -7,6 +7,7 @@ import db from './db';
 import { toProjection, toPathKeys, atomize } from './helpers';
 
 export const getRecipe = `${PathKey.Recipe}[{integers}].${toPathKeys(gettableRecipeProperties)}`;
+export const getRecipeById = `${PathKey.RecipeById}[{integers:id}].${toPathKeys(gettableRecipeProperties)}`;
 
 const routes: RouteDefinition[] = [
   {
@@ -35,6 +36,25 @@ const routes: RouteDefinition[] = [
               value: atomize(recipe[key])
             }))
           );
+        })
+        .catch(() => {
+          throw new Error('DB fail');
+        });
+    }
+  },
+  {
+    route: getRecipeById,
+    get: async (pathSet: any) => {
+      const { id } = pathSet;
+      const keys: string[] = pathSet[2];
+
+      return db
+        .then(async () => {
+          const recipe = await Recipe.findById(id, toProjection(keys));
+          return keys.map((key) => ({
+            path: [DbModelName.Recipe, id, key],
+            value: atomize(recipe[key])
+          }));
         })
         .catch(() => {
           throw new Error('DB fail');

@@ -1,13 +1,24 @@
 import { RouteDefinition } from 'falcor-router';
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
-import { DbModelName, PathKey } from './constants';
+import { PathKey } from './constants';
 import Recipe, { RecipeProperties, gettableRecipeProperties } from './models/Recipe';
 import db from './db';
-import { toProjection, toPathKeys, atomize } from './helpers';
+import { toProjection, atomize, pathBuilder, interpretPathSetWithIds } from './helpers';
 
-export const getRecipe = `${PathKey.Recipe}[{integers}].${toPathKeys(gettableRecipeProperties)}`;
-export const getRecipeById = `${PathKey.RecipeById}[{integers:id}].${toPathKeys(gettableRecipeProperties)}`;
+export const getRecipe = pathBuilder(PathKey.Recipe)
+  .withIndices()
+  .withProperties(gettableRecipeProperties);
+export const getRecipeById = pathBuilder(PathKey.RecipeById)
+  .withIds()
+  .withProperties(gettableRecipeProperties);
+
+// TODO: Pretty print this in dev mode.
+console.log({
+  getRecipe,
+  getRecipeById
+});
 
 const routes: RouteDefinition[] = [
   {
@@ -16,7 +27,7 @@ const routes: RouteDefinition[] = [
       db
         .then(async () => {
           const value = await Recipe.estimatedDocumentCount();
-          return { path: [DbModelName.Recipe, 'length'], value };
+          return { path: [PathKey.Recipe, 'length'], value };
         })
         .catch(() => {
           throw new Error('DB fail');
@@ -32,7 +43,7 @@ const routes: RouteDefinition[] = [
           const recipes = await Recipe.find({}, toProjection(keys));
           return _.flatMap(recipes, (recipe: RecipeProperties, index) =>
             keys.map((key) => ({
-              path: [DbModelName.Recipe, index, key],
+              path: [PathKey.Recipe, index, key],
               value: atomize(recipe[key])
             }))
           );
@@ -45,16 +56,19 @@ const routes: RouteDefinition[] = [
   {
     route: getRecipeById,
     get: async (pathSet: any) => {
-      const { id } = pathSet;
-      const keys: string[] = pathSet[2];
+      const [ids, keys] = interpretPathSetWithIds(pathSet);
 
       return db
         .then(async () => {
-          const recipe = await Recipe.findById(id, toProjection(keys));
-          return keys.map((key) => ({
-            path: [DbModelName.Recipe, id, key],
-            value: atomize(recipe[key])
-          }));
+          const recipes = await Recipe.find({ _id: ids }, toProjection(keys));
+          return _.flatMap(recipes, (recipe: mongoose.Document) =>
+            keys
+              .filter((key) => recipe[key] !== undefined)
+              .map((key) => ({
+                path: [PathKey.RecipeById, recipe.id, key],
+                value: atomize(recipe[key])
+              }))
+          );
         })
         .catch(() => {
           throw new Error('DB fail');

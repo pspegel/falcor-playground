@@ -2,6 +2,7 @@ import React from 'react';
 import { match as Match } from 'react-router-dom';
 
 import { model } from 'client/falcorModel';
+import { PathKey } from 'server/constants';
 
 type RouteParams = Readonly<{
   id: string;
@@ -14,7 +15,7 @@ type RecipeProps = Readonly<{
 type RecipeState = Readonly<{
   title: string;
   tags: string[];
-  description: string;
+  introduction: string;
 }>;
 
 class Recipe extends React.Component<RecipeProps, RecipeState> {
@@ -23,15 +24,15 @@ class Recipe extends React.Component<RecipeProps, RecipeState> {
     this.state = {
       title: '',
       tags: [],
-      description: ''
+      introduction: ''
     };
   }
 
   public componentDidMount = () => {
     const { match } = this.props;
 
-    const fields = ['title', 'tags', 'description'];
-    model.get(['recipeById', [match.params.id], fields]).then(({ json }) => {
+    const fields = ['title', 'tags', 'introduction'];
+    model.get([PathKey.RecipeById, [match.params.id], fields]).then(({ json }) => {
       console.log({
         json
       });
@@ -39,7 +40,7 @@ class Recipe extends React.Component<RecipeProps, RecipeState> {
   };
 
   public render() {
-    const { title, tags, description } = this.state;
+    const { title, tags, introduction } = this.state;
 
     const tagList = tags.map((tag) => <li key={tag}>{tag}</li>);
 
@@ -47,7 +48,7 @@ class Recipe extends React.Component<RecipeProps, RecipeState> {
       <div className="recipe">
         <h2>{title}</h2>
         <ul>{tagList}</ul>
-        <p>{description}</p>
+        <p>{introduction}</p>
       </div>
     );
   }

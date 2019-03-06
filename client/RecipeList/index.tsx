@@ -5,7 +5,7 @@ import { PathKey } from 'server/constants';
 import { project } from 'client/helpers';
 
 type Recipe = Readonly<{
-  id?: string;
+  id: string;
   title: string;
 }>;
 
@@ -16,7 +16,7 @@ type RecipeListState = Readonly<{
 }>;
 
 class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
-  constructor(props) {
+  constructor(props: RecipeListProps) {
     super(props);
     this.state = {
       recipes: []
@@ -29,7 +29,7 @@ class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
         return;
       }
 
-      const fields = ['title'];
+      const fields = ['id', 'title'];
       model.get([PathKey.Recipe, { from: 0, to: numberOfRecipes - 1 }, fields]).then(({ json }) => {
         this.setState({
           recipes: project<Recipe>(json[PathKey.Recipe], fields)

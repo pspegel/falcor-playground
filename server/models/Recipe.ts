@@ -22,6 +22,6 @@ const properties = {
 
 const recipeSchema = new mongoose.Schema(properties, { timestamps: true });
 
-export const gettableRecipeProperties = getGettableProperties(properties);
+export const gettableRecipeProperties = [...getGettableProperties(properties), 'id'];
 
 export default mongoose.model<RecipeModel>(DbModelName.Recipe, recipeSchema, DbModelName.Recipe);

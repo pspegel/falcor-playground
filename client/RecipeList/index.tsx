@@ -2,9 +2,10 @@ import React from 'react';
 
 import { model } from 'client/falcorModel';
 import { PathKey } from 'server/constants';
+import { project } from 'client/helpers';
 
 type Recipe = Readonly<{
-  id: string;
+  id?: string;
   title: string;
 }>;
 
@@ -23,15 +24,18 @@ class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
   }
 
   public componentDidMount = () => {
-    // model.getValue(['recipe', 'length']).then((numberOfRecipies) => {
-    //   model
-    //     .get([PathKey.Recipe, { from: 0, to: numberOfRecipies - 1 }, ['title', 'description', 'tags']])
-    //     .then((response) => {
-    //       // this.setState({
-    //       //   recipies: response.json
-    //       // });
-    //     });
-    // });
+    model.getValue(['recipe', 'length']).then((numberOfRecipies) => {
+      if (!numberOfRecipies) {
+        return;
+      }
+
+      const fields = ['title'];
+      model.get([PathKey.Recipe, { from: 0, to: numberOfRecipies - 1 }, fields]).then(({ json }) => {
+        this.setState({
+          recipies: project<Recipe>(json[PathKey.Recipe], fields)
+        });
+      });
+    });
   };
 
   public render() {

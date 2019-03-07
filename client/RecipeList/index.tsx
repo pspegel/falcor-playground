@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { model } from 'client/falcorModel';
 import { PathKey } from 'server/constants';
-import { project } from 'client/helpers';
+import { projectToArray } from 'client/helpers';
 
 type Recipe = Readonly<{
   id: string;
@@ -33,7 +33,7 @@ class RecipeList extends React.Component<RecipeListProps, RecipeListState> {
       const fields = ['id', 'title'];
       model.get([PathKey.Recipe, { from: 0, to: numberOfRecipes - 1 }, fields]).then(({ json }) => {
         this.setState({
-          recipes: project<Recipe>(json[PathKey.Recipe], fields)
+          recipes: projectToArray<Recipe>(json[PathKey.Recipe], fields)
         });
       });
     });

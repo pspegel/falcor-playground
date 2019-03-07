@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export const project = <T>(obj: any, properties: string[]): T[] => {
+export const projectToArray = <T>(obj: any, properties: string[]): T[] => {
   const result = [];
   Object.keys(obj).forEach((key) => {
     if (isNaN(Number.parseInt(key, 10))) {

@@ -30,11 +30,15 @@ class Recipe extends React.Component<RecipeProps, RecipeState> {
 
   public componentDidMount = () => {
     const { match } = this.props;
+    const recipeId = match.params.id;
 
     const fields = ['title', 'tags', 'introduction'];
-    model.get([PathKey.RecipeById, [match.params.id], fields]).then(({ json }) => {
-      console.log({
-        json
+    model.get([PathKey.RecipeById, [recipeId], fields]).then(({ json }) => {
+      const recipe = json[PathKey.RecipeById][match.params.id];
+      this.setState({
+        title: recipe.title,
+        tags: recipe.tags,
+        introduction: recipe.introduction
       });
     });
   };

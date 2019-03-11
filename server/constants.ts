@@ -1,3 +1,5 @@
+export const MONGO_ID = '_id';
+
 export enum DbModelName {
   Recipe = 'recipe'
 }

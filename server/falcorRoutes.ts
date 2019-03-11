@@ -1,15 +1,14 @@
 import { RouteDefinition } from 'falcor-router';
-import _ from 'lodash';
 import mongoose from 'mongoose';
+import _ from 'lodash';
+import { ref } from 'falcor-json-graph';
 
-import { PathKey } from './constants';
-import Recipe, { RecipeProperties, gettableRecipeProperties } from './models/Recipe';
+import { PathKey, MONGO_ID } from './constants';
+import Recipe, { gettableRecipeProperties } from './models/Recipe';
 import db from './db';
 import { toProjection, atomize, pathBuilder, interpretPathSetWithIds } from './helpers';
 
-export const getRecipe = pathBuilder(PathKey.Recipe)
-  .withIndices()
-  .withProperties(gettableRecipeProperties);
+export const getRecipe = pathBuilder(PathKey.Recipe).withIndices();
 export const getRecipeById = pathBuilder(PathKey.RecipeById)
   .withIds()
   .withProperties(gettableRecipeProperties);
@@ -35,18 +34,15 @@ const routes: RouteDefinition[] = [
   },
   {
     route: getRecipe,
-    get: async (pathSet: any) => {
-      const keys: string[] = pathSet[2];
-
+    get: async () => {
+      // TODO: Support ranges of indices instead of just "all".
       return db
         .then(async () => {
-          const recipes = await Recipe.find({}, toProjection(keys));
-          return _.flatMap(recipes, (recipe: RecipeProperties, index) =>
-            keys.map((key) => ({
-              path: [PathKey.Recipe, index, key],
-              value: atomize(recipe[key])
-            }))
-          );
+          const recipes = await Recipe.find({}, toProjection([MONGO_ID]), {});
+          return recipes.map((recipe: mongoose.Document, index) => ({
+            path: [PathKey.Recipe, index],
+            value: ref([PathKey.RecipeById, recipe.id])
+          }));
         })
         .catch(() => {
           throw new Error('DB fail');

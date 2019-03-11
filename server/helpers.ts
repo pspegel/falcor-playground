@@ -51,9 +51,7 @@ export const pathBuilder = (pathKey: string) => {
     withIndices: () => {
       path += HAVING_INIDICES;
 
-      return {
-        withProperties
-      };
+      return path;
     },
     withIds: () => {
       path += HAVING_IDS;

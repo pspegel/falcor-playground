@@ -106,4 +106,5 @@ In the early days of MongoDB they made an appalling choice of having singular na
 * HMR doesn't work for nested components. Go back and check when it stopped working.
 * Error handling of DB connection.
 * Path aliases doesn't always work.
-* Surfing directly to sub route doesn't work.
+* ~~Surfing directly to sub route doesn't work.~~
+* Split the server into dev and production again. It's getting messy.
